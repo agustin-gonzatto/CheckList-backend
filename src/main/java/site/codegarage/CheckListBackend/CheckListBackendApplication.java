@@ -1,13 +1,13 @@
-package site.codegarage.ChekListBackend;
+package site.codegarage.CheckListBackend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ChekListBackendApplication {
+public class CheckListBackendApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ChekListBackendApplication.class, args);
+		SpringApplication.run(CheckListBackendApplication.class, args);
 	}
 
 }

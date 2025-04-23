@@ -1,9 +1,14 @@
 package site.codegarage.CheckListBackend.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
-
+@RequiredArgsConstructor
+@Getter
+@Setter
 @Entity
 public class ChecklistItem {
     @Id
@@ -18,4 +23,20 @@ public class ChecklistItem {
     @ManyToOne
     @JoinColumn(name = "checklist_id")
     private Checklist checklist;
+
+
+    public boolean isCompleted() {
+        return isChecked;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        modifiedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        modifiedAt = LocalDateTime.now();
+    }
 }

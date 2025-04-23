@@ -37,13 +37,13 @@ public class AuthService {
         return  jwtUtil.generateToken(authResult);
     }
 
-    public void registerUser(NewUserDto newUserDto,String name,String lastName, String email){
+    public void registerUser(NewUserDto newUserDto){
         if (userService.existByUsername(newUserDto.getUsername())){
             throw new IllegalArgumentException("El nombre de usuario ya existe");
         }
 
         Role roleUser = roleRepository.findByName(RoleList.ROLE_USER).orElseThrow(()->new RuntimeException("Rol no encontrado"));
-        User user = new User(roleUser, name , lastName, newUserDto.getUsername(),email, passwordEncoder.encode(newUserDto.getPassword()));
+        User user = new User(roleUser, newUserDto.getName(), newUserDto.getLastname(), newUserDto.getUsername(), newUserDto.getEmail(), passwordEncoder.encode(newUserDto.getPassword()));
         userService.save(user);
 
     }

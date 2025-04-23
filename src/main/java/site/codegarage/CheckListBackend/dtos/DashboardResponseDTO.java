@@ -6,5 +6,6 @@ public record DashboardResponseDTO(
         Long id,
         String title,
         LocalDateTime createdAt,
-        LocalDateTime modifiedAt
+        LocalDateTime modifiedAt,
+        String owner
 ) {}

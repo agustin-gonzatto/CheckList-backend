@@ -40,8 +40,8 @@ public class AuthController {
             return ResponseEntity.badRequest().body("Revise los campos");
         }
         try {
-            String name = "";String lastName = ""; String email ="";
-            authService.registerUser(newUserDto,name,lastName,email);
+
+            authService.registerUser(newUserDto);
             return ResponseEntity.status(HttpStatus.CREATED).body("Registrado");
         } catch (IllegalArgumentException e){
             return ResponseEntity.badRequest().body(e.getMessage());

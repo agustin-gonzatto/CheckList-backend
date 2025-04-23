@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import site.codegarage.CheckListBackend.dtos.DashboardRequestDTO;
 import site.codegarage.CheckListBackend.dtos.DashboardResponseDTO;
 import site.codegarage.CheckListBackend.entities.Dashboard;
 import site.codegarage.CheckListBackend.entities.User;
@@ -80,17 +81,4 @@ public class DashboardController {
         );
     }
 
-    // Definir DTOs como records (Java 16+)
-    public record DashboardRequestDTO(
-            @NotBlank(message = "El título es obligatorio")
-            String title
-    ) {}
-
-    public record DashboardResponseDTO(
-            Long id,
-            String title,
-            LocalDateTime createdAt,
-            LocalDateTime modifiedAt,
-            String owner
-    ) {}
 }

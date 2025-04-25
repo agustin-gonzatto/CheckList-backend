@@ -59,4 +59,14 @@ public class DashboardService {
                 dashboard.getOwner().getUsername()
         );
     }
+
+    public void updateDashboard(Long id, DashboardRequestDTO dashboardRequestDTO) {
+        Dashboard eDashboard = dashboardRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Dashborad no encontrado"));
+
+        // Actualizar campos
+        eDashboard.setTitle(dashboardRequestDTO.title());
+
+        Dashboard updatedDashboard = dashboardRepository.save(eDashboard);
+    }
 }

@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import site.codegarage.CheckListBackend.dtos.ChecklistRequestDTO;
 import site.codegarage.CheckListBackend.dtos.DashboardRequestDTO;
 import site.codegarage.CheckListBackend.dtos.DashboardResponseDTO;
 import site.codegarage.CheckListBackend.entities.User;
@@ -49,6 +50,14 @@ public class DashboardController {
 
         User user = userService.findByUsername(principal.getName());
         dashboardService.deleteDashboard(dashboardId, user);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{dashboardId}")
+    public ResponseEntity<Void> updateDashboard(
+            @PathVariable Long dashboardId,
+            @Valid @RequestBody DashboardRequestDTO dashboardRequestDTO) {
+        dashboardService.updateDashboard(dashboardId, dashboardRequestDTO);
         return ResponseEntity.noContent().build();
     }
 }

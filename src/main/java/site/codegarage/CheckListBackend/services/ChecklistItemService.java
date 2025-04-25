@@ -2,6 +2,7 @@ package site.codegarage.CheckListBackend.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import site.codegarage.CheckListBackend.dtos.CheckListItemPatchRequestDTO;
 import site.codegarage.CheckListBackend.dtos.ChecklistItemRequestDTO;
 import site.codegarage.CheckListBackend.dtos.ChecklistItemResponseDTO;
 import site.codegarage.CheckListBackend.entities.Checklist;
@@ -62,7 +63,7 @@ public class ChecklistItemService {
         return mapToDTO(updatedItem);
     }
 
-    public ChecklistItemResponseDTO updateItemPatch(Long checklistId, Long itemId, ChecklistItemRequestDTO itemDTO) {
+    public ChecklistItemResponseDTO updateItemPatch(Long checklistId, Long itemId, CheckListItemPatchRequestDTO itemDTO) {
         ChecklistItem existingItem = checklistItemRepository.findById(itemId)
                 .orElseThrow(() -> new RuntimeException("Ítem no encontrado con id: " + itemId));
 

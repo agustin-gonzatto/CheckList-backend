@@ -1,20 +1,16 @@
 package site.codegarage.CheckListBackend.controllers;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.codegarage.CheckListBackend.dtos.DashboardRequestDTO;
 import site.codegarage.CheckListBackend.dtos.DashboardResponseDTO;
-import site.codegarage.CheckListBackend.entities.Dashboard;
 import site.codegarage.CheckListBackend.entities.User;
-import site.codegarage.CheckListBackend.repositories.DashboardRepository;
-import site.codegarage.CheckListBackend.repositories.UserRepository;
+import site.codegarage.CheckListBackend.services.DashboardService;
 import site.codegarage.CheckListBackend.services.UserService;
 
 import java.security.Principal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -22,13 +18,11 @@ import java.util.List;
 public class DashboardController {
 
     private final UserService userService;
-    private final DashboardRepository dashboardRepository;
+    private final DashboardService dashboardService;
 
-    // Constructor con inyección de dependencias
-    public DashboardController(UserService userService,
-                               DashboardRepository dashboardRepository) {
+    public DashboardController(UserService userService, DashboardService dashboardService) {
         this.userService = userService;
-        this.dashboardRepository = dashboardRepository;
+        this.dashboardService = dashboardService;
     }
 
     @PostMapping
@@ -36,49 +30,25 @@ public class DashboardController {
             @Valid @RequestBody DashboardRequestDTO dashboardDTO,
             Principal principal) {
 
-        // Obtener usuario autenticado
         User user = userService.findByUsername(principal.getName());
-
-        // Crear nueva entidad
-        Dashboard newDashboard = new Dashboard();
-        newDashboard.setTitle(dashboardDTO.title());
-        newDashboard.setOwner(user);
-
-        // Establecer fechas
-        LocalDateTime now = LocalDateTime.now();
-        newDashboard.setCreatedAt(now);
-        newDashboard.setModifiedAt(now);
-
-        // Guardar en BD
-        Dashboard savedDashboard = dashboardRepository.save(newDashboard);
-
-        // Convertir a DTO y retornar respuesta
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(mapToDashboardResponseDTO(savedDashboard));
+        DashboardResponseDTO responseDTO = dashboardService.createDashboard(dashboardDTO, user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
     @GetMapping
     public ResponseEntity<List<DashboardResponseDTO>> getUserDashboards(Principal principal) {
-        // Obtener dashboards del usuario
         User user = userService.findByUsername(principal.getName());
-        List<Dashboard> dashboards = dashboardRepository.findByOwner(user);
-
-        // Convertir a DTOs
-        List<DashboardResponseDTO> response = dashboards.stream()
-                .map(this::mapToDashboardResponseDTO)
-                .toList();
-
+        List<DashboardResponseDTO> response = dashboardService.getUserDashboards(user);
         return ResponseEntity.ok(response);
     }
 
-    private DashboardResponseDTO mapToDashboardResponseDTO(Dashboard dashboard) {
-        return new DashboardResponseDTO(
-                dashboard.getId(),
-                dashboard.getTitle(),
-                dashboard.getCreatedAt(),
-                dashboard.getModifiedAt(),
-                dashboard.getOwner().getUsername() // Agregar owner si es necesario
-        );
-    }
+    @DeleteMapping("/{dashboardId}")
+    public ResponseEntity<Void> deleteDashboard(
+            @PathVariable Long dashboardId,
+            Principal principal) {
 
+        User user = userService.findByUsername(principal.getName());
+        dashboardService.deleteDashboard(dashboardId, user);
+        return ResponseEntity.noContent().build();
+    }
 }

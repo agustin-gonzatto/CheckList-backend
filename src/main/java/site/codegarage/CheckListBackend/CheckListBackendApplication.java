@@ -14,6 +14,7 @@ public class CheckListBackendApplication {
 		System.setProperty("DB_PASS", dotenv.get("DB_PASS"));
 		System.setProperty("DB_URL", dotenv.get("DB_URL"));
 		System.setProperty("DB_USER", dotenv.get("DB_USER"));
+		System.setProperty("SECRET", dotenv.get("SECRET"));
 		SpringApplication.run(CheckListBackendApplication.class, args);
 		printStartupMessage();
 	}

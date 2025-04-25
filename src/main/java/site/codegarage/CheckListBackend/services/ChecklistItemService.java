@@ -71,7 +71,7 @@ public class ChecklistItemService {
             throw new RuntimeException("El ítem no pertenece al checklist especificado");
         }
 
-        if (!itemDTO.description().isBlank()){
+        if (itemDTO.description()!=null){
             existingItem.setDescription(itemDTO.description());
         }
         existingItem.setChecked(itemDTO.completed());

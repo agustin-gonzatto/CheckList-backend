@@ -42,6 +42,14 @@ public class ChecklistItemController {
     }
 
     @PutMapping("/{itemId}")
+    public ResponseEntity<ChecklistItemResponseDTO> updateItemf(
+            @PathVariable Long checklistId,
+            @PathVariable Long itemId,
+            @Valid @RequestBody ChecklistItemRequestDTO itemDTO) {
+        return ResponseEntity.ok(checklistItemService.updateItem(checklistId, itemId, itemDTO));
+    }
+
+    @PatchMapping("/{itemId}")
     public ResponseEntity<ChecklistItemResponseDTO> updateItem(
             @PathVariable Long checklistId,
             @PathVariable Long itemId,

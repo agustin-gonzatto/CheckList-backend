@@ -51,6 +51,4 @@ public class ChecklistController {
         checklistService.deleteChecklist(id);
         return ResponseEntity.noContent().build();
     }
-
-
 }

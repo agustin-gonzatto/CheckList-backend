@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import site.codegarage.CheckListBackend.dtos.CheckListItemPatchRequestDTO;
 import site.codegarage.CheckListBackend.dtos.ChecklistItemRequestDTO;
 import site.codegarage.CheckListBackend.dtos.ChecklistItemResponseDTO;
 import site.codegarage.CheckListBackend.services.ChecklistItemService;
@@ -53,8 +54,8 @@ public class ChecklistItemController {
     public ResponseEntity<ChecklistItemResponseDTO> updateItem(
             @PathVariable Long checklistId,
             @PathVariable Long itemId,
-            @Valid @RequestBody ChecklistItemRequestDTO itemDTO) {
-        return ResponseEntity.ok(checklistItemService.updateItem(checklistId, itemId, itemDTO));
+            @Valid @RequestBody CheckListItemPatchRequestDTO itemDTO) {
+        return ResponseEntity.ok(checklistItemService.updateItemPatch(checklistId, itemId, itemDTO));
     }
 
     @DeleteMapping("/{itemId}")

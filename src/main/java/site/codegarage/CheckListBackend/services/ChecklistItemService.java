@@ -62,6 +62,22 @@ public class ChecklistItemService {
         return mapToDTO(updatedItem);
     }
 
+    public ChecklistItemResponseDTO updateItemPatch(Long checklistId, Long itemId, ChecklistItemRequestDTO itemDTO) {
+        ChecklistItem existingItem = checklistItemRepository.findById(itemId)
+                .orElseThrow(() -> new RuntimeException("Ítem no encontrado con id: " + itemId));
+
+        if (!existingItem.getChecklist().getId().equals(checklistId)) {
+            throw new RuntimeException("El ítem no pertenece al checklist especificado");
+        }
+
+        if (!itemDTO.description().isBlank()){
+            existingItem.setDescription(itemDTO.description());
+        }
+        existingItem.setChecked(itemDTO.completed());
+        ChecklistItem updatedItem = checklistItemRepository.save(existingItem);
+        return mapToDTO(updatedItem);
+    }
+
     public void deleteItem(Long checklistId, Long itemId) {
         ChecklistItem item = checklistItemRepository.findById(itemId)
                 .orElseThrow(() -> new RuntimeException("Ítem no encontrado con id: " + itemId));

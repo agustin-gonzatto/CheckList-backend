@@ -14,7 +14,6 @@ public class ChecklistItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String description;
     private boolean isChecked;
     private LocalDateTime createdAt;
@@ -23,7 +22,6 @@ public class ChecklistItem {
     @ManyToOne
     @JoinColumn(name = "checklist_id")
     private Checklist checklist;
-
 
     public boolean isCompleted() {
         return isChecked;
